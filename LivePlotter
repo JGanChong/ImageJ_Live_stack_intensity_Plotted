@@ -1,0 +1,98 @@
+/* Tested with ImageJ 1.53c
+ *  
+ *  To run macro, set desired inner (diamter2) and outer (diammter 1) by chanigng the diamter1 and diamater2 variable, then select main image and run macro
+ * 
+ * 
+ */
+
+setOption("ExpandableArrays",true);
+diameter1 = 20;
+diameter2 = 10;
+
+title = getTitle();
+
+
+
+roiManager("reset");
+newImage("MASK", "8-bit black", diameter1, diameter1, 1);
+
+center2 = (diameter1/2)-(diameter2/2);
+makeOval(center2, center2, diameter2, diameter2);
+setBackgroundColor(0, 0, 0);
+setForegroundColor(255, 255, 255);
+run("Fill", "slice");
+
+
+
+makeOval(0, 0, diameter1, diameter1);
+setBackgroundColor(0, 0, 0);
+setForegroundColor(255, 255, 255);
+run("Fill", "slice");
+run("Create Selection");
+roiManager("Add");
+
+makeOval(center2, center2, diameter2, diameter2);
+setForegroundColor(0, 0, 0);
+setBackgroundColor(255, 255, 255);
+run("Fill", "slice");
+run("Create Selection");
+roiManager("Add");
+
+close("MASK");
+selectImage(title);
+
+
+getCursorLoc(x2, y2, z2, flags);
+
+xvalues = newArray();
+for (i = 1; i <= nSlices; i++) {
+	xvalues[i-1] = i;
+}
+values1 = newArray();
+			
+
+
+while (isKeyDown("alt")!=1) {
+	getCursorLoc(x, y, z, flags);
+	if (x!=x2 || y!=y2 || z!=z2) {
+			
+
+			currentslice = getSliceNumber;
+			
+            values1 = newArray();
+			values2 = newArray();
+			Plot.create("Mean values", "Movement", "Y");
+			roiManager("Select", 0);
+			setSelectionLocation(center2+x-(diameter1/2), center2+y-(diameter1/2));
+            for (i = 1; i <=nSlices; i++) {
+            	
+            	setSlice(i);
+            	getStatistics(area, mean, min, max, std, histogram);
+            	values1[i-1]=mean;
+            }
+            Plot.add( "connected circle", xvalues, values1, "Small Circle");
+		
+			
+			roiManager("Select", 1);
+			setSelectionLocation(0+x-(diameter1/2), 0+y-(diameter1/2));
+            for (i = 1; i <=nSlices; i++) {
+            	setSlice(i);
+            	getStatistics(area, mean, min, max, std, histogram);
+            	values1[i-1]=mean;
+            }
+            Plot.setColor("red","red");
+
+            Plot.add( "connected circle", xvalues, values1, "Big Circle");
+            Plot.update;
+  
+			setSlice(currentslice);
+			
+            
+            			
+          }
+          x2=x; y2=y; z2=z; 
+          wait(10);
+      }
+ 
+
+
