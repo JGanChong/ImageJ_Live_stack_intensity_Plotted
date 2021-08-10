@@ -1,6 +1,6 @@
 /* Tested with ImageJ 1.53c
  *  
- *  To run macro, set desired inner (diamter2) and outer (diammter 1) by chanigng the diamter1 and diamater2 variable, then select main image and run macro
+ *  To run macro, set desired inner (diamter2) and outer (diammter 1) by chanigng the diamter1 and diamater2 variable, then select main image and run macro. to exit simply press the "Alt" key in your keyboard.
  * 
  * 
  */
