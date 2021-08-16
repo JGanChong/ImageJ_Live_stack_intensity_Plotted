@@ -4,10 +4,15 @@
  * 
  * 
  */
-
+run("Options...", "iterations=1 count=1 black");
 setOption("ExpandableArrays",true);
 diameter1 = 20;
 diameter2 = 10;
+//Set Min and Max x and Y axis values. use "NaN" for automatic
+xMin = "NaN"; 
+xMax ="NaN";
+yMin = "NaN";
+yMax = "NaN";
 
 title = getTitle();
 
@@ -81,7 +86,7 @@ while (isKeyDown("alt")!=1) {
             	values1[i-1]=mean;
             }
             Plot.setColor("red","red");
-
+	    Plot.setLimits(xMin, xMax, yMin, yMax);
             Plot.add( "connected circle", xvalues, values1, "Big Circle");
             Plot.update;
   
